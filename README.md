@@ -23,12 +23,12 @@ main()
 		reverse(line, len);
 		printf("%s\n", line);
 	}
-	return 0;
-}
+	return 0;}
 
 //翻转字符串
 void reverse(char s[], int l)
 {
+
 	char t[MAXLINE];
 	int i = l;
 	for (int j = 0; j < l; j++)
@@ -45,6 +45,7 @@ void reverse(char s[], int l)
 //获取输入行（此段为标准答案中的函数）
 int getline(char s[], int lim)
 {
+
 	int c, i, j;
 
 	j = 0;
@@ -68,11 +69,10 @@ int getline(char s[], int lim)
 2. 编写程序 expr，以计算从命令行输入的逆波兰表达式的值，其中每个运算符或操作数用一个单独的参数表示。例如，命令
 expr 2 3 4 + *
 
-// getfloat.c
 #include<stdio.h>
 #include<ctype.h>
-int getfloat(char* str, double* store)
-{
+int getfloat(char* str, double* store){
+
 	while (isspace(*str))
 		str++;
 	int ch, sign;
@@ -80,17 +80,13 @@ int getfloat(char* str, double* store)
 	ch = *str++;
 	sign = ch == '-' ? -1 : 1;
 	if (ch == '+' || ch == '-')
-	{
 		ch == *str++;
-	}
 	for (*store == 0.0; isdigit(ch); ch = *str++)
 	{
 		*store = *store*10.0 + ch - '0';
 	}
 	if (ch == '.')
-	{
 		ch = *str++;
-	}
 	for (; isdigit(ch); ch = *str++)
 	{
 		*store = *store*10.0 + ch - '0';
@@ -98,86 +94,65 @@ int getfloat(char* str, double* store)
 	}
 	if (ch == 0 || isspace(ch) || ch == EOF)
 	{
-		//如果不能继续读取数字，那么跳出的原因必须是 ch==0 || isspace(ch) || ch==EOF
 		*store /= power;
 		*store *= sign;
 		return 1;
 	}
 	else
-	{
 		return -1;
-	}
-}
-
+		}
+	
 //expr.c
-
-#include<stdio.h>
-#include<ctype.h>
-
 #define MAX_NUM 100
 double stack[MAX_NUM];
 extern int getfloat(char* str, double*);
 
-int main(int argc, char* argv[])
-{
-	if (argc < 2)
-	{
+int main(int argc, char* argv[]){
+
+	if (argc < 2) {
 		printf("usage: expr num1 num2 operator ...\n");
 		return 1;
 	}
-	else
-	{
+	else {
 		int stackp = 0;
 		int ch = 0;
 		double num1, num2, ans;
-		while (--argc >= 1)
-		{
+		while (--argc >= 1) {
 			ch = (*++argv)[0];
-			if (ch == '-')
-			{
-				if (!isdigit(ch = (*argv)[1]))
-				{
+			if (ch == '-'){
+				if (!isdigit(ch = (*argv)[1])) {
 					//是负号
-					if (stackp >= 2)
-					{
+					if (stackp >= 2) {
 						num2 = stack[--stackp];
 						num1 = stack[--stackp];
 						stack[stackp++] = num1 - num2;
 						continue;
 					}
-					else
-					{
+					else {
 						printf("Error: at least two numbers are needed before operator '-'\n");
 						return -1;
 					}
 				}
 			}
-			if (isdigit(ch))
-			{
-				if (stackp < 0)
-				{
+			if (isdigit(ch)) {
+				if (stackp < 0) {
 					printf("stack is underflowed!\n");
 					return -2;
 				}
-				else if (stackp >= MAX_NUM)
-				{
+				else if (stackp >= MAX_NUM) {
 					printf("stack is overflowed!\n");
 					return -3;
 				}
-				else if (getfloat(*argv, &stack[stackp++]) == -1)
-				{
+				else if (getfloat(*argv, &stack[stackp++]) == -1) {
 					printf("wrong argument to get number: %s\n", *argv);
 					return -4;
 				}
 			}
-			else if (ch == '+' || ch == '*' || ch == '/' || ch == '%')
-			{
-				if (stackp >= 2)
-				{
+			else if (ch == '+' || ch == '*' || ch == '/' || ch == '%') {
+				if (stackp >= 2) {
 					num2 = stack[--stackp];
 					num1 = stack[--stackp];
-					switch (ch)
-					{
+					switch (ch) {
 					case '+':
 						ans = num1 + num2;
 						break;
@@ -185,8 +160,7 @@ int main(int argc, char* argv[])
 						ans = num1*num2;
 						break;
 					case '/':
-						if (num2 == 0.0)
-						{
+						if (num2 == 0.0) {
 							printf("error zero divisor: %f / %f\n", num1, num2);
 							return -5;
 						}
@@ -198,29 +172,26 @@ int main(int argc, char* argv[])
 					}
 					stack[stackp++] = ans;
 				}
-				else
-				{
+				else {
 					printf("Error: at least two numbers are needed before operator '%c'\n", ch);
 					return -6;
 				}
 			}
-			else
-			{
+			else {
 				printf("wrong arguments for %c,usage: expr num1 num2 operator ...\n", ch);
 				return -7;
 			}
 		}
-		if (stackp == 1)
-		{
+		if (stackp == 1) {
 			printf("%.4f\n", stack[0]);
 		}
-		else
-		{
+		else {
 			printf("the format of input is wrong!\n");
 		}
 	}
 	return 0;
 }
+
 
 3. 用归并排序将3，1，4，1，5，9，2，6 排序。
 
@@ -230,10 +201,12 @@ int main(int argc, char* argv[])
 
 void merge(int arr[], int low, int mid, int high)
 {
+
 	int i, k;
+	
 	int *tmp = (int *)malloc((high - low + 1)*sizeof(int));
-	//申请空间，使其大小为两个
-	int left_low = low;
+	
+	int left_low = mid;
 	int left_high = mid;
 	int right_low = mid + 1;
 	int right_high = high;
@@ -274,12 +247,17 @@ void merge(int arr[], int low, int mid, int high)
 
 void merge_sort(int arr[], unsigned int first, unsigned int last)
 {
+
 	int mid = 0;
+	
 	if (first<last)
 	{
-		mid = (first + last) / 2; /* 注意防止溢出 */
+	
+		mid = (first + last) / 2;
+		
 		/*mid = first/2 + last/2;*/
 		//mid = (first & last) + ((first ^ last) >> 1);
+		
 		merge_sort(arr, first, mid);
 		merge_sort(arr, mid + 1, last);
 		merge(arr, first, mid, last);
@@ -289,9 +267,11 @@ void merge_sort(int arr[], unsigned int first, unsigned int last)
 
 int main()
 {
-	int i;
-	int a[N] = { 3，1，4，1，5，9，2，6 };
 
+	int i;
+	
+	int a[N] = { 3，1，4，1，5，9，2，6 };
+	
 	printf("排序前 \n");
 	for (i = 0; i<N; i++)
 		printf("%d\t", a[i]);
